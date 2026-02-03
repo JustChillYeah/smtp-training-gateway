@@ -126,6 +126,55 @@ def build_training_banner(detections):
     lines.append("")
     return "\n".join(lines)
 
+def build_training_banner_html(detections):
+    if not detections:
+        return ""
+
+    tactics = ", ".join([d["label"] for d in detections])
+    tips = "".join(
+        f"<li><strong>{d['label']}:</strong> {TACTIC_TIPS.get(d['tactic'], '')}</li>"
+        for d in detections
+        if TACTIC_TIPS.get(d["tactic"], "")
+    )
+
+    # Subtle “info” styling: light background, thin border, not shouty.
+    return f"""
+<div style="
+  margin: 0 0 16px 0;
+  padding: 12px 14px;
+  border: 1px solid #e6d9a8;
+  background: #fff9db;
+  color: #2b2b2b;
+  border-radius: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 1.35;">
+  <div style="font-weight: 700; margin-bottom: 6px;">Training banner: persuasion cues detected</div>
+  <div style="margin-bottom: 8px;">
+    This email contains persuasion techniques commonly used in phishing. Pause before acting and verify the sender via a trusted channel.
+  </div>
+  <div style="margin-bottom: 6px;"><strong>Detected tactics:</strong> {tactics}</div>
+  {"<div style='margin-top: 8px;'><strong>What to look for:</strong><ul style='margin: 6px 0 0 18px; padding: 0;'>" + tips + "</ul></div>" if tips else ""}
+</div>
+""".strip()
+
+
+def inject_banner_into_html(existing_html: str, banner_html: str) -> str:
+    if not banner_html:
+        return existing_html or ""
+
+    html = existing_html or ""
+
+    lower = html.lower()
+    body_idx = lower.find("<body")
+    if body_idx != -1:
+        # Insert right after the opening <body ...> tag
+        open_end = lower.find(">", body_idx)
+        if open_end != -1:
+            return html[:open_end + 1] + banner_html + html[open_end + 1:]
+
+    # Fallback: prepend if no <body> tag found
+    return banner_html + html
 
 
 class TrainingGatewayHandler:
@@ -173,8 +222,26 @@ class TrainingGatewayHandler:
                     except Exception:
                         payload = msg.get_payload(decode=True) or b""
                         plain_body = payload.decode(errors="replace")
+            html_body = ""
+            if msg.is_multipart():
+                for part in msg.walk():
+                    if part.get_content_type() == "text/html":
+                        try:
+                            html_body = part.get_content()
+                        except Exception:
+                            payload = part.get_payload(deocde=True) or b""
+                            html_body = payload.decode(errors="replace")
+                        break
+            else:
+                if msg.get_content_type() == "text/html":
+                    try:
+                        html_body = msg.get_content()
+                    except Exception:
+                        payload = msg.get_payload(decode=True) or b""
+                        html_body == payload.decode(errors="replace")
 
-            detections = analyse_persuasion(subject or "", plain_body or "")
+            content_for_detection = plain_body or html_body
+            detections = analyse_persuasion(subject or "", content_for_detection or "")
 
             if detections:
                 msg["X-Training-Gateway"] = "smtp-training-gateway"
@@ -199,6 +266,31 @@ class TrainingGatewayHandler:
                                 break
                     else:
                         msg.set_content(new_body)
+                banner_html = build_training_banner_html(detections)
+
+                def _get_html_from_part(p):
+                    try:
+                        return p.get_content()
+                    except Exception:
+                        payload == p.get_payload(decode=True) or b""
+                        return payload.decode(errors="replace")
+                
+                if msg.is_multipart():
+                    for part in msg.walk():
+                        if part.get_content_type() == "text/html":
+                            existing_html = _get_html_from_part(part)
+                            new_html = inject_banner_into_html(existing_html, banner_html)
+                            part.set_content(new_html, subtype="html")
+                            break
+                else:
+                    if msg.get_content_type() == "text/html":
+                        try:
+                            existing_html == msg.get_content()
+                        except Exception:
+                            payload == msg.get_payload(decode=True) or b""
+                            existing_html = payload.decode(errors="replace")
+                        new_html = inject_banner_into_html(existing_html, banner_html)
+                        msg.set_content(new_html, subtype="html")
 
                 fired = []
                 for d in detections:
