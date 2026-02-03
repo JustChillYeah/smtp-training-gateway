@@ -11,8 +11,8 @@ import smtplib
 
 
 SAVE_DIR = Path("evidence")
-LISTEN_HOST = "127.0.0.1"
-LISTEN_PORT = 2525
+LISTEN_HOST = "0.0.0.0"
+LISTEN_PORT = 25
 
 DOWNSTREAM_HOST = "127.0.0.1"
 DOWNSTREAM_PORT = 1025  # MailHog SMTP
