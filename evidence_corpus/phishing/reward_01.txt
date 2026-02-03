@@ -1,0 +1,17 @@
+Subject: Tax refund available for a limited period
+
+Dear Customer,
+
+We are contacting you to inform you that you are eligible for a tax refund resulting from an overpayment in a previous tax year.
+
+The refund amount is available to be claimed for a limited period before it is carried forward or becomes unavailable.
+
+To receive your refund, you are required to submit a claim by confirming your details through the appropriate process.
+
+If no action is taken, the refund may be delayed or rolled into future tax records.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/reimbursements-are-available-only-for-a-certain-period-of-hm-revenue--customs-uk
+Used with permission of the site owner. Branding, links, and identifiers removed.

@@ -1,0 +1,21 @@
+Subject: HMRC online security update
+
+Dear Customer,
+
+In accordance with financial regulatory requirements, HM Revenue & Customs is implementing an additional layer of security to protect taxpayer information.
+
+As part of this process, you are required to update your account details in order to continue using online services.
+
+This update supports compliance with regulatory standards and ensures the continued protection of tax-related information.
+
+The update process will take only a short amount of time to complete.
+
+Yours sincerely,
+Security Advisor
+HM Revenue & Customs
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/new-hmrc-online-security-features-hm-revenue--customs
+Used with permission of the site owner. Branding, links, and identifiers removed.

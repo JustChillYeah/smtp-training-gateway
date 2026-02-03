@@ -1,0 +1,17 @@
+Subject: Suspicious activity detected in your account
+
+Dear Customer,
+
+We have detected illegal access attempts to your account, which has caused some account features to be temporarily restricted for security reasons.
+
+Details of the suspicious activity have been recorded, including the location and time of access.
+
+If this activity was not authorised by you, your account may be at risk of further misuse.
+
+To resolve this issue and restore full access, you are required to review your account activity and confirm your information.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/paypall-you-must-update-your-information-microsoft
+Used with permission of the site owner. Branding, links, and identifiers removed.

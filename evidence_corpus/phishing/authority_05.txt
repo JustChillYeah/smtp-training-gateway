@@ -1,0 +1,22 @@
+Subject: Negative feedback notification
+
+Dear Member,
+
+You have received negative feedback in relation to a recent transaction on the platform.
+
+The transaction has been flagged as unauthorised due to the involvement of an account that is no longer registered. As a result, this matter falls under marketplace policy review.
+
+eBay provides several formal procedures for managing feedback, including responding to comments, submitting follow-up statements, requesting mutual feedback withdrawal, or seeking mediation through an approved dispute resolution service.
+
+To manage this issue and review the available options, you are advised to sign in to your account using the official feedback management process.
+
+Regards,
+
+Marketplace Policy Team
+Safeharbor Department
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/negative-feedback-ebay
+Used with permission of the site owner. Branding, links, and identifiers removed.

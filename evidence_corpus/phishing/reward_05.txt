@@ -1,0 +1,17 @@
+Subject: Wire transfer confirmation – funds approved
+
+Dear Customer,
+
+This message is to inform you that a wire transfer order has been successfully approved through an online banking system.
+
+A payment in the amount of MYR 3,800 has been processed and transferred to you as part of a completed transaction.
+
+The transfer has been verified and confirmed, and the associated reference number has been assigned for record purposes.
+
+You are advised to review the transfer details and confirm receipt through the appropriate process.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/alert-message-from-royal-bank-of-scotland-royalbankofscotlandrbscom
+Used with permission of the site owner. Branding, links, and identifiers removed.

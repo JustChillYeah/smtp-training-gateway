@@ -1,0 +1,20 @@
+Subject: Account update notification
+
+Dear Customer,
+
+As part of our ongoing efforts to maintain the privacy and security of customer information, we are providing an update relating to account records.
+
+In order to continue protecting your information and ensuring accurate account management, you are requested to review and update your profile details.
+
+This process supports our commitment to safeguarding customer data and maintaining service integrity.
+
+Thank you for your patience and cooperation as we work to protect your account.
+
+Sincerely,
+Customer Support Team
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/-important-security-notification--credit-union-national-associat
+Used with permission of the site owner. Branding, links, and identifiers removed.

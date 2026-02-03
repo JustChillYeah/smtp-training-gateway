@@ -1,0 +1,19 @@
+Subject: Final Notice: We were unable to process your payment
+
+Dear Customer,
+
+We were unable to process your most recent service bill at this time.
+
+The billing information associated with your account may have expired, and your service is now scheduled for disconnection.
+
+To ensure that your service is not interrupted, you are required to confirm your billing information immediately in order to avoid suspension.
+
+Please take action as soon as possible to prevent any disruption to your service.
+
+The Service Team
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/final-notice-we-were-unable-to-process-your-direct-debit-youraccountvirginmediacouk
+Used with permission of the site owner. Branding, links, and identifiers removed.

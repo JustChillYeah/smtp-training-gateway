@@ -1,0 +1,21 @@
+Subject: Messages on hold due to security update
+
+Dear Member,
+
+Due to a recent system update, you are required to update and verify your mailbox.
+
+If this action is not completed, your pending messages may not be delivered and your account may be suspended.
+
+To avoid interruption to your email service, you must confirm your account information as soon as possible.
+
+Please complete the required update to restore normal access.
+
+Thank you for your cooperation,
+
+Mail Support Team
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/you-have-massages-on-hold-due-to-aol-security-update-aol-mail-33182
+Used with permission of the site owner. Branding, links, and identifiers removed.

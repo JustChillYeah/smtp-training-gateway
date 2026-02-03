@@ -1,0 +1,19 @@
+Subject: Congratulations – Euromillions prize notification
+
+Dear Winner,
+
+We are pleased to inform you that your email address has been selected as a winner in an international Euromillions promotional programme.
+
+You have been awarded a cash prize of 1,850,000 USD as part of this draw, held in conjunction with an international marketing initiative.
+
+Your win has been assigned a unique reference and batch number for verification and processing purposes.
+
+To claim your prize, you are required to contact the designated claims representative and provide the necessary confirmation details.
+
+Congratulations on your winning entry.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/congratulations-you-have-won-in-euromillions-euromillion-international
+Used with permission of the site owner. Branding, links, and identifiers removed.

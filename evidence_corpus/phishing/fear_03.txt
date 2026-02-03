@@ -1,0 +1,17 @@
+Subject: Notification from International Police Authority
+
+Dear Sir or Madam,
+
+This message is to inform you that an investigation is currently underway involving a consignment that has been linked to your name.
+
+The matter is being handled by international police authorities following reports received from law enforcement agencies. The consignment is presently held in custody pending verification of its ownership and legality.
+
+You are required to provide confirmation and documentation to demonstrate that the funds involved are lawful. Failure to do so may result in confiscation of the assets and further criminal investigation.
+
+You are advised to respond without delay, as the review period is limited and the matter may be escalated if no response is received.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/from-international-interpol-police-force-unit-from-international-interpol-po
+Used with permission of the site owner. Branding, links, and identifiers removed.

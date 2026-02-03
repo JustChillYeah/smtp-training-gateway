@@ -1,0 +1,17 @@
+Subject: Identity theft notice regarding your account
+
+Dear Customer,
+
+We have identified discrepancies in information previously reported on your account and have confirmed indicators consistent with identity theft.
+
+As a result, a protective flag has been placed on your account to prevent further misuse.
+
+To resolve this issue and restore normal account processing, you are required to review and update your information.
+
+Failure to address this matter may delay or prevent access to account-related services and funds.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/immediate-reconfirmation-of-your-details-required-irs
+Used with permission of the site owner. Branding, links, and identifiers removed.

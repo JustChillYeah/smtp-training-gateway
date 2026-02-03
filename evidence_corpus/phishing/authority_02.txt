@@ -1,0 +1,19 @@
+Subject: Your account requires attention
+
+Dear User,
+
+Your account security and data protection are important to us, and we manage your information to help prevent fraudulent activity.
+
+We have recently updated our safety guidelines to improve the reliability of our online services, and we require your cooperation to implement these changes.
+
+You are advised to log in to your account and complete the required update process in order to remain compliant with the new guidelines.
+
+Thank you for your cooperation as we continue to work towards maintaining a secure service.
+
+Customer Services Team
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/your-yahoo-needs-attention-yahoo
+Used with permission of the site owner. Branding, links, and identifiers removed.

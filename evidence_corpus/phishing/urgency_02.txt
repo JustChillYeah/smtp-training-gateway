@@ -1,0 +1,22 @@
+Subject: Ticket ID: 777345 – Urgent notice
+
+Attention,
+
+Hello,
+
+You are required to check your account balance using the link provided.
+
+Please also confirm your bank verification status to ensure your account remains active.
+
+Failure to complete this verification may affect access to your account.
+
+Regards,
+
+Support Team
+Money System Support
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/ticket-id-777345-urgent-notice-for-stevescott-support-32440
+Used with permission of the site owner. Branding, links, and identifiers removed.

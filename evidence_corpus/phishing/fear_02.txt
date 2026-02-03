@@ -1,0 +1,19 @@
+Subject: Notification from International Police Association
+
+Dear Sir or Madam,
+
+We are writing to inform you that an investigation is currently underway involving a parcel containing a large sum of money that has been linked to your name.
+
+According to statements obtained during questioning, the parcel was reportedly intended for delivery to you. As a result, the matter is now under review by security officials.
+
+The individual involved is currently being detained pending verification of the legality and ownership of the funds. Until this investigation is completed, the parcel cannot be released.
+
+You are required to provide documentation proving lawful ownership of the funds in order to avoid further legal action. Failure to do so may result in confiscation of the money and escalation of the matter to financial crime authorities.
+
+You are advised to respond promptly, as the review period is limited.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/international-police-association-united-states-section--police-international
+Used with permission of the site owner. Branding, links, and identifiers removed.

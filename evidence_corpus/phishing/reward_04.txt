@@ -1,0 +1,17 @@
+Subject: Bequest notification – beneficiary selected
+
+Attention,
+
+You have been identified as a selected beneficiary in relation to a personal bequest.
+
+A substantial sum of money, in excess of 85,000 USD, has been set aside to be transferred to you following unresolved compensation matters from previous years.
+
+The funds are intended to be released to a trusted recipient rather than retained or forfeited, and your details are required to facilitate the transfer process.
+
+You have been selected to assist with the release of these funds and to receive the associated benefit.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/hello-dearthis-is-a-bequest-notice-mrs-marina-luda
+Used with permission of the site owner. Branding, links, and identifiers removed.

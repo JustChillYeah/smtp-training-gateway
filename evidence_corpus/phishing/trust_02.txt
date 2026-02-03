@@ -1,0 +1,17 @@
+Subject: Payment receipt notification
+
+Hello,
+
+This message confirms that a payment has been sent through your account to a registered merchant.
+
+A transaction in the amount of 59.88 USD has been processed and may take a short time to appear in your account history.
+
+You can view further transaction details by accessing your account through the usual service interface.
+
+Thank you for using our service.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/you-receipt-sent-a-payment-to-cleverbridge-inc-servicepaypalcom
+Used with permission of the site owner. Branding, links, and identifiers removed.

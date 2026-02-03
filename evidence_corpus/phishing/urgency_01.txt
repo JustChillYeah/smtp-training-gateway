@@ -1,0 +1,20 @@
+Subject: URGENT: Order Confirmation Pending
+
+Hello,
+
+Your account was used to purchase a gift card on a computer or device that has not previously been associated with your account.
+
+If you did not make this purchase, or if you believe an unauthorised person has accessed your account, you should verify your information as soon as possible.
+
+Failure to take action may result in further unauthorised activity.
+
+You can review the order details or cancel the order using the options provided.
+
+Order reference: ######
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/urgent--amazon-order-confirmation-pending-amazon-order
+Used with permission of the site owner. Branding, links, and identifiers removed.
+

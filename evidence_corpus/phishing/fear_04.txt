@@ -1,0 +1,17 @@
+Subject: Important notice regarding account security
+
+Dear Customer,
+
+We are writing to inform you that a recent security incident resulted in unauthorised access to a number of customer accounts and associated data.
+
+Although the issue has now been resolved, some account information may have been exposed during the incident.
+
+As a precaution, customers are being asked to review their account details and complete a security check to ensure that no further unauthorised activity has occurred.
+
+Failure to take appropriate steps may place your account at risk of misuse.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/hi-you-have-1-new-message-amazon
+Used with permission of the site owner. Branding, links, and identifiers removed.

@@ -1,0 +1,20 @@
+Subject: Mailbox synchronisation notice
+
+Hello,
+
+This message is to inform you that your mailbox account experienced a synchronisation issue and several incoming messages could not be delivered successfully.
+
+The synchronisation process was unsuccessful because the mailbox could not be validated at the time of the attempt.
+
+You may review your mailbox to retrieve pending messages and restore normal operation.
+
+This notification applies to the Microsoft account associated with this email address.
+
+Thank you,
+Microsoft
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/16th-march-new-microsoft-word-email-admin-33391
+Used with permission of the site owner. Branding, links, and identifiers removed.

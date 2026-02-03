@@ -1,0 +1,19 @@
+Subject: Final Reminder: Restriction on your account
+
+Dear Customer,
+
+A recent charge on your account has been disputed and requires immediate attention.
+
+Due to this issue, we are currently unable to process any orders on your account.
+
+To remove this restriction, you must access your account and resolve the problem as soon as possible.
+
+Failure to take action will result in continued limitations on your account services.
+
+Please do not reply to this message.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/final-reminder-restriction-on-your-amazoncom-account-amazoncom-33235
+Used with permission of the site owner. Branding, links, and identifiers removed.

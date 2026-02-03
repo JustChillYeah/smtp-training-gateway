@@ -1,0 +1,19 @@
+Subject: Scheduled maintenance completed on your account
+
+Dear Customer,
+
+A scheduled maintenance process has recently been completed on the online banking system.
+
+To ensure that your account remains active and protected, you have been advised to review your account and billing records.
+
+Please log in to your online account to complete this review and confirm that your details are correct.
+
+We are continuing work to ensure normal service operation.
+
+Account Review Department
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/a-scheduled-maintenance-has-just-been-completed-on-your-natwest-online
+Used with permission of the site owner. Branding, links, and identifiers removed.

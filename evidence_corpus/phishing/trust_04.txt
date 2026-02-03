@@ -1,0 +1,20 @@
+Subject: Online banking security update
+
+Dear Customer,
+
+At Halifax, we are committed to ensuring that your online banking experience remains secure.
+
+As part of our ongoing security measures, we are providing an update relating to customer communications and online account usage.
+
+Please review the provided information to continue using online banking services as normal.
+
+Further details regarding terms of use, privacy information, and account fees are available through standard service channels.
+
+Kind regards,
+Customer Communications
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/halifax-online-banking-secureform-halifax-bank-uk
+Used with permission of the site owner. Branding, links, and identifiers removed.

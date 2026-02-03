@@ -1,0 +1,17 @@
+Subject: New message available for your account
+
+Hello,
+
+We have sent you a message relating to your account. You can sign in to online or mobile banking to view the message.
+
+This notification was generated automatically. Please do not reply to this email.
+
+For additional information, you may access standard account resources such as security, privacy, and mobile banking services.
+
+Thank you.
+
+Source note:
+Paraphrased from a phishing example published on the MillerSmiles scam report archive.
+Original example page (for internal traceability):
+https://www.millersmiles.co.uk/email/new-message-from-navy-federal-credit-union-navy-federal-33397
+Used with permission of the site owner. Branding, links, and identifiers removed.
