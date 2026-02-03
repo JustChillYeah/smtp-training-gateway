@@ -17,27 +17,115 @@ LISTEN_PORT = 2525
 DOWNSTREAM_HOST = "127.0.0.1"
 DOWNSTREAM_PORT = 1025  # MailHog SMTP
 
-URGENCY_PATTERNS = [
-    "urgent", "immediately", "asap", "action required", "act now",
-    "within 24 hours", "within 48 hours", "limited time", "final notice",
-    "your account will be", "suspended", "terminated", "locked",
-]
+RULES = {
+    "urgency": {
+        "label": "Urgency",
+        "subject": [
+            ("URG_01", 4, ["urgent", "final notice", "final reminder", "action required"]),
+        ],
+        "body": [
+            ("URG_02", 3, ["as soon as possible", "immediately", "you must", "required to", "act now", "within 24 hours", "within 48 hours"]),
+            ("URG_03", 5, ["failure to take action will result", "last opportunity", "final notice", "final reminder"]),
+        ],
+        "threshold": 4,
+    },
+    "fear": {
+        "label": "Fear",
+        "subject": [
+            ("FER_01", 5, ["unauthorised access", "identity theft", "criminal investigation", "account at risk"]),
+        ],
+        "body": [
+            ("FER_02", 4, ["failure to do so may result", "may result in", "may delay or prevent access", "will be suspended", "will be locked"]),
+            ("FER_03", 3, ["review your account activity", "confirm your information", "provide documentation", "complete a security check"]),
+        ],
+        "threshold": 4,
+    },
+    "authority": {
+        "label": "Authority",
+        "subject": [
+            ("AUTH_01", 4, ["hm revenue & customs", "hmrc", "account review department", "customer services", "policy team"]),
+        ],
+        "body": [
+            ("AUTH_02", 3, ["terms of service", "privacy policy", "regulatory requirements", "policy review", "compliance", "guidelines"]),
+            ("AUTH_03", 4, ["you are required to", "must", "required to confirm", "remain compliant"]),
+        ],
+        "threshold": 4,
+    },
+    "reward": {
+        "label": "Reward",
+        "subject": [
+            ("REW_02", 5, ["congratulations", "winner", "you have been selected", "cash prize"]),
+            ("REW_01", 4, ["tax refund", "refund available", "overpayment", "reimbursement"]),
+        ],
+        "body": [
+            ("REW_03", 4, ["small payment", "discounted", "reward card", "provides 100"]),
+            ("REW_04", 4, ["beneficiary", "bequest", "funds set aside", "compensation matters"]),
+            ("REW_05", 3, ["wire transfer approved", "payment processed", "funds transferred"]),
+        ],
+        "threshold": 5,
+    },
+}
 
-def detect_urgency(subject: str, body: str) -> tuple[bool, list[str]]:
-    text = f"{subject}\n{body}".lower()
-    hits = [p for p in URGENCY_PATTERNS if p in text]
-    return (len(hits) > 0), hits
+TACTIC_TIPS = {
+    "urgency": "Look for deadlines and pressure to act quickly.",
+    "fear": "Look for threats (account locked, investigation, harm) that push compliance.",
+    "authority": "Look for impersonation of official bodies and 'policy/compliance' language.",
+    "reward": "Look for unexpected refunds, prizes, or 'money owed to you' claims.",
+}
 
-def build_urgency_banner(hits: list[str]) -> str:
-    found = ", ".join(hits[:5])
-    return (
-        "=== TRAINING BANNER: URGENCY / TIME PRESSURE ===\n"
-        "This email contains language that creates urgency to push quick action.\n"
-        "Common signs: tight deadlines, threats of account restriction, pressure words.\n"
-        f"Detected cues: {found}\n"
-        "What to do: slow down, verify the sender via a trusted channel, don't click in a rush.\n"
-        "=== END TRAINING BANNER ===\n\n"
-    )
+def analyse_persuasion(subject: str, body: str):
+    s = (subject or "").lower()
+    b = (body or "").lower()
+
+    detections = []
+    for tactic, cfg in RULES.items():
+        score = 0
+        hits = []
+
+        for rule_id, weight, patterns in cfg.get("subject", []):
+            if any(p in s for p in patterns):
+                score += weight
+                hits.append((rule_id, "subject", weight))
+
+        for rule_id, weight, patterns in cfg.get("body", []):
+            if any(p in b for p in patterns):
+                score += weight
+                hits.append((rule_id, "body", weight))
+
+        if score >= cfg["threshold"]:
+            detections.append({
+                "tactic": tactic,
+                "label": cfg["label"],
+                "score": score,
+                "hits": hits,
+            })
+
+    detections.sort(key=lambda d: d["score"], reverse=True)
+    return detections
+
+def build_training_banner(detections):
+    if not detections:
+        return ""
+
+    lines = []
+    lines.append("=== TRAINING BANNER: PERSUASION CUES DETECTED ===")
+    lines.append("This email contains persuasion techniques commonly used in phishing.")
+    lines.append("Pause before acting. Verify the sender via a trusted channel.")
+    lines.append("")
+    lines.append("Detected tactics:")
+    for d in detections:
+        lines.append(f"- {d['label']} (score {d['score']})")
+    lines.append("")
+    lines.append("What to look for:")
+    for d in detections:
+        tip = TACTIC_TIPS.get(d["tactic"], "")
+        if tip:
+            lines.append(f"- {d['label']}: {tip}")
+    lines.append("")
+    lines.append("=== END TRAINING BANNER ===")
+    lines.append("")
+    return "\n".join(lines)
+
 
 
 class TrainingGatewayHandler:
@@ -86,25 +174,23 @@ class TrainingGatewayHandler:
                         payload = msg.get_payload(decode=True) or b""
                         plain_body = payload.decode(errors="replace")
 
-            is_urgent, hits = detect_urgency(subject or "", plain_body or "")
+            detections = analyse_persuasion(subject or "", plain_body or "")
 
-            if is_urgent:
-                # Add training headers
+            if detections:
                 msg["X-Training-Gateway"] = "smtp-training-gateway"
-                msg["X-Training-Tactic"] = "urgency"
+                msg["X-Training-Tactics"] = ", ".join([d["tactic"] for d in detections])
 
-                # Subject tag (avoid duplication)
+                primary = detections[0]
                 subj = msg.get("Subject", "")
-                if not subj.startswith("[Training: Urgency]"):
+                prefix = f"[Training: {primary['label']}]"
+                if not subj.startswith(prefix):
                     if "Subject" in msg:
                         del msg["Subject"]
-                    msg["Subject"] = f"[Training: Urgency] {subj}"
+                    msg["Subject"] = f"{prefix} {subj}"
 
-
-                # Prepend banner to plain text body if we found one
                 if plain_body:
-                    banner = build_urgency_banner(hits)
-                    new_body = banner + plain_body
+                    banner = build_training_banner(detections)
+                    new_body = banner + "\n" + plain_body
 
                     if msg.is_multipart():
                         for part in msg.walk():
@@ -114,11 +200,18 @@ class TrainingGatewayHandler:
                     else:
                         msg.set_content(new_body)
 
-                print(f"[CLASS] urgency hits={hits}")
+                fired = []
+                for d in detections:
+                    for rule_id, loc, w in d["hits"]:
+                        fired.append(f"{rule_id}:{loc}:{w}")
+                msg["X-Training-Rules"] = ", ".join(fired)[:900]
+
+                print(f"[CLASS] detected={[d['tactic'] for d in detections]}")
             else:
-                print("[CLASS] no urgency detected")
+                print("[CLASS] no tactics detected")
 
             to_forward = msg.as_bytes()
+
 
         print(f"[RECV] id={msg_id} from={envelope.mail_from} to={envelope.rcpt_tos}")
         if subject:
@@ -144,7 +237,7 @@ def main():
     controller = Controller(handler, hostname=LISTEN_HOST, port=LISTEN_PORT, decode_data=False)
     controller.start()
     print(f"Gateway listening on {LISTEN_HOST}:{LISTEN_PORT}")
-    print(f"Forwarding to downstream {DOWNSTREAM_HOST}:{DOWNSTREAM_PORT} (MailHog)")
+    print(f"Forwarding to downstream {DOWNSTREAM_HOST}:{DOWNSTREAM_PORT} (MailPit)")
     print("Press Ctrl+C to stop.")
     try:
         while True:

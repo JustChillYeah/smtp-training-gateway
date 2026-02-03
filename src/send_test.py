@@ -7,7 +7,7 @@ GATEWAY_PORT = 2525
 msg = EmailMessage()
 msg["From"] = "test@example.com"
 msg["To"] = "you@example.com"
-msg["Subject"] = "Please review"
+msg["Subject"] = "URGENT: Please review"
 
 # This line is the body, testing urgency logic
 msg.set_content(
