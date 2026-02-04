@@ -44,11 +44,11 @@ RULES = {
     "authority": {
         "label": "Authority",
         "subject": [
-            ("AUTH_01", 4, ["hm revenue & customs", "hmrc", "account review department", "customer services", "policy team"]),
+            ("AUTH_01", 4, ["hm revenue & customs", "hmrc", "account review department", "customer services", "policy team", "account notification", "service update", "policy update", "compliance notice", "official communication"]),
         ],
         "body": [
-            ("AUTH_02", 3, ["terms of service", "privacy policy", "regulatory requirements", "policy review", "compliance", "guidelines"]),
-            ("AUTH_03", 4, ["you are required to", "must", "required to confirm", "remain compliant"]),
+            ("AUTH_02", 3, ["terms of service", "privacy policy", "regulatory requirements", "policy review", "compliance", "guidelines", "in accordance with", "regulatory requirements", "case reference"]),
+            ("AUTH_03", 4, ["you are required to", "must", "required to confirm", "remain compliant", "security team", "compliance team", "internal review"]),
         ],
         "threshold": 4,
     },
