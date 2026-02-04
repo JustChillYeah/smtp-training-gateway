@@ -55,13 +55,13 @@ RULES = {
     "reward": {
         "label": "Reward",
         "subject": [
-            ("REW_02", 5, ["congratulations", "winner", "you have been selected", "cash prize"]),
-            ("REW_01", 4, ["tax refund", "refund available", "overpayment", "reimbursement"]),
+            ("REW_02", 5, ["congratulations", "winner", "you have been selected", "cash prize", "compensation"]),
+            ("REW_01", 4, ["tax refund", "refund available", "overpayment", "reimbursement", "refund notice", "payment update", "billing adjustment", "account credit"]),
         ],
         "body": [
-            ("REW_03", 4, ["small payment", "discounted", "reward card", "provides 100"]),
-            ("REW_04", 4, ["beneficiary", "bequest", "funds set aside", "compensation matters"]),
-            ("REW_05", 3, ["wire transfer approved", "payment processed", "funds transferred"]),
+            ("REW_03", 4, ["small payment", "discounted", "reward card", "provides 100", "payment issued"]),
+            ("REW_04", 4, ["beneficiary", "bequest", "funds set aside", "compensation matters", "credit applied", "funds available"]),
+            ("REW_05", 3, ["wire transfer approved", "payment processed", "funds transferred", "ammount owed", "elgible for"]),
         ],
         "threshold": 5,
     },
