@@ -387,7 +387,7 @@ class TrainingGatewayHandler:
                 primary = non_trust[0] if non_trust else detections[0]
 
                 subj = msg.get("Subject", "")
-                prefix = f"[Training: {primary['label']}]"
+                prefix = f"[Potential phishing: {primary['label']}]"
                 if not subj.startswith(prefix):
                     if "Subject" in msg:
                         del msg["Subject"]
