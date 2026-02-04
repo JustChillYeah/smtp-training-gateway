@@ -16,7 +16,7 @@ LISTEN_HOST = "0.0.0.0"
 LISTEN_PORT = 25
 
 DOWNSTREAM_HOST = "127.0.0.1"
-DOWNSTREAM_PORT = 1025  # MailHog SMTP
+DOWNSTREAM_PORT = 1025  # Mailpit SMTP
 
 RULES = {
     "urgency": {
@@ -92,6 +92,79 @@ def normalise(text: str) -> str:
     text = re.sub(r"[^\w\s@:/.-]+", " ", text) # keeps useful chars
     text = re.sub(r"\s{2,}", " ", text).strip()
     return text
+
+URL_RE = re.compile(r"https?://[^\s<>\"]+|www\.[^\s<>\"]+", re.IGNORECASE)
+EMAIL_RE = re.compile(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", re.IGNORECASE)
+
+HREF_RE = re.compile(r'href\s*=\s*["\']([^"\']+)["\']', re.IGNORECASE)
+ANCHOR_TEXT_RE = re.compile(r"<a\b[^>]*>(.*?)</a>", re.IGNORECASE | re.DOTALL)
+TAG_RE = re.compile(r"<[^>]+>")
+
+def strip_html(html: str) -> str:
+    if not html:
+        return ""
+    return normalise(TAG_RE.sub(" ", html))
+
+def extract_email_domain(header_value: str) -> str:
+    """
+    Best-effort domain extraction from headers like:
+    From: Name <user@domain.com>
+    Reply-To: user@other.com
+    """
+    if not header_value:
+        return ""
+    s = header_value.strip()
+    m = EMAIL_RE.search(s)
+    if not m:
+        return ""
+    addr = m.group(0)
+    return addr.rsplit("@", 1)[1].lower()
+
+def extract_signals(msg, plain_body: str, html_body: str):
+    """
+    Returns:
+      signals: list of tuples (signal_id, weight, detail)
+    """
+    signals = []
+
+    from_domain = extract_email_domain(msg.get("From", ""))
+    reply_to_domain = extract_email_domain(msg.get("Reply-To", ""))
+
+    # Signal 1: Reply-To mismatch 
+    if reply_to_domain and from_domain and reply_to_domain != from_domain:
+        signals.append(("SIG_REPLYTO_MISMATCH", 4, f"{from_domain}->{reply_to_domain}"))
+
+    # Build a combined text view for URL counting
+    body_text = normalise(plain_body or "")
+    body_html_text = strip_html(html_body or "")
+    combined = (body_text + " " + body_html_text).strip()
+
+    # Signal 2: URL presence / URL volume
+    urls = URL_RE.findall(combined)
+    if len(urls) >= 3:
+        signals.append(("SIG_MANY_URLS", 2, f"urls={len(urls)}"))
+    elif len(urls) == 2:
+        signals.append(("SIG_TWO_URLS", 1, "urls=2"))
+    elif len(urls) == 1:
+        signals.append(("SIG_HAS_URL", 1, "urls=1"))
+
+    # Signal 3: HTML link text mismatch vs href (simple, explainable)
+    # If the visible anchor text contains a domain, but that domain isn't in the href, flag it.
+    if html_body:
+        hrefs = HREF_RE.findall(html_body)[:15]
+        anchor_texts = ANCHOR_TEXT_RE.findall(html_body)[:15]
+        for i, href in enumerate(hrefs):
+            visible = strip_html(anchor_texts[i]) if i < len(anchor_texts) else ""
+            # Visible text might contain a domain like "microsoft.com"
+            visible_domains = set(re.findall(r"\b[a-z0-9.-]+\.[a-z]{2,}\b", visible))
+            if visible_domains:
+                href_n = normalise(href)
+                if not any(d in href_n for d in visible_domains):
+                    signals.append(("SIG_LINKTEXT_MISMATCH", 3, f"visible={list(visible_domains)[0]}"))
+                    break
+
+    return signals
+
 
 def analyse_persuasion(subject: str, body: str):
     s = normalise(subject)
@@ -283,7 +356,30 @@ class TrainingGatewayHandler:
             content_for_detection = plain_body or html_body
             detections = analyse_persuasion(subject or "", content_for_detection or "")
 
+            signals = extract_signals(msg, plain_body or "", html_body or "")
+            if signals:
+                #log as an explainable header
+                msg["X-Training-Signals"] = ", ".join([f"{sid}:{w}:{detail}" for sid, 2, detail in signals])[:900]
+
             if detections:
+                if signals and detections:
+                    sig_ids = {sid for sid, _, _ in signals}
+
+                    for d in detections:
+                        # Reply-To mismatch tends to support authority/trust abuse narratives
+                        if "SIG_REPLYTO_MISMATCH" in sig_ids and d["tactic"] in ("authority", "trust"):
+                            d["score"] += 1
+                            d["hits"].append(("SIG_REPLYTOMISMATCH", "signal", 1))
+
+                            # Link pressure supports "action now" tactics
+                            if sig_ids.intersection({"SIG_HAS_URL", "SIG_TWO_URLS", "SIG_MANY_URLS", "SIG_LINKTEXT_MISMATCH"}):
+                                if d["tactic"] in ("urgency", "fear", "authority", "reward"):
+                                    d["score"] += 1
+                                    d["hits"].append(("SIG_LINK_PRESSURE", "signal", 1))
+                    
+                    #Re-sort if score changed
+                    detections.sort(key=lambda x: x["score"], reverse=True)
+
                 msg["X-Training-Gateway"] = "smtp-training-gateway"
                 msg["X-Training-Tactics"] = ", ".join([d["tactic"] for d in detections])
 
