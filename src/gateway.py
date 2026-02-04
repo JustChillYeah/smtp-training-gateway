@@ -290,13 +290,17 @@ def defang_url(url: str) -> str:
     u = re.sub(r"\.", "[.]", u)
     return u
 
+DEFANG_NOTE = " [URL defanged for safety]"
+
 def defang_text(text: str) -> str:
+    if DEFANG_NOTE in text:
+        return text
     # Defang any URLs found in plain text
     if not text:
         return text
     
     def _repl(match):
-        return defang_url(match.group(0))
+        return defang_url(match.group(0)) + DEFANG_NOTE
     
     return URL_RE.sub(_repl, text)
 
@@ -311,9 +315,15 @@ def defang_html(html: str) -> str:
     
     html = HREF_RE.sub(_href_repl, html)
 
+    def _visible_repl(match):
+        url = match.group(0)
+        return (
+            defang_url(url)
+            + '<span style="color:#666; font-size:11px;"> [URL defanged for safety]</span>'
+        )
+    
     #defang visible URLs in text
-    html = defang_text(html)
-
+    html = URL_RE.sub(_visible_repl, html)
     return html
 class TrainingGatewayHandler:
     async def handle_RCPT(self, server, session, envelope, address, rcpt_options):
