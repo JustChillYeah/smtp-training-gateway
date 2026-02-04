@@ -33,11 +33,11 @@ RULES = {
     "fear": {
         "label": "Fear",
         "subject": [
-            ("FER_01", 5, ["unauthorised access", "identity theft", "criminal investigation", "account at risk"]),
+            ("FER_01", 5, ["unauthorised", "unauthorized" "identity theft", "criminal investigation", "account at risk", "security alert", "unusual activity", "account issue", "access problem", "login attempt detected"]),
         ],
         "body": [
-            ("FER_02", 4, ["failure to do so may result", "may result in", "may delay or prevent access", "will be suspended", "will be locked"]),
-            ("FER_03", 3, ["review your account activity", "confirm your information", "provide documentation", "complete a security check"]),
+            ("FER_02", 4, ["failure to do so may result", "may result in", "may delay or prevent access", "will be suspended", "will be locked", "suspicious activity", "potential compromise", "risk detected"]),
+            ("FER_03", 3, ["review your account activity", "confirm your information", "provide documentation", "complete a security check", "unusual sign-in", "protect your account", "prevent unauthorised access"]),
         ],
         "threshold": 4,
     },
