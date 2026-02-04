@@ -22,10 +22,10 @@ RULES = {
     "urgency": {
         "label": "Urgency",
         "subject": [
-            ("URG_01", 4, ["urgent", "final notice", "final reminder", "action required"]),
+            ("URG_01", 4, ["urgent", "final notice", "final reminder", "action required", "attention needed", "time sensitive", "expires soon", "pending action", "response needed", "important notice"]),
         ],
         "body": [
-            ("URG_02", 3, ["as soon as possible", "immediately", "you must", "required to", "act now", "within 24 hours", "within 48 hours"]),
+            ("URG_02", 3, ["as soon as possible", "immediately", "you must", "required to", "act now", "within 24 hours", "within 48 hours", "as soon as possible", "without delay", "prompt action", "at your earliest", "limited time", "will expire"]),
             ("URG_03", 5, ["failure to take action will result", "last opportunity", "final notice", "final reminder"]),
         ],
         "threshold": 4,
