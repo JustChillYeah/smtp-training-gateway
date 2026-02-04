@@ -359,7 +359,7 @@ class TrainingGatewayHandler:
             signals = extract_signals(msg, plain_body or "", html_body or "")
             if signals:
                 #log as an explainable header
-                msg["X-Training-Signals"] = ", ".join([f"{sid}:{w}:{detail}" for sid, 2, detail in signals])[:900]
+                msg["X-Training-Signals"] = ", ".join([f"{sid}:{w}:{detail}" for sid, w, detail in signals])[:900]
 
             if detections:
                 if signals and detections:
