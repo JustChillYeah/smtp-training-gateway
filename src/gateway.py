@@ -83,13 +83,13 @@ TACTIC_TIPS = {
     "fear": "Look for threats (account locked, investigation, harm) that push compliance.",
     "authority": "Look for impersonation of official bodies and 'policy/compliance' language.",
     "reward": "Look for unexpected refunds, prizes, or 'money owed to you' claims.",
-    "trust": "Look for familiar tone and routine prompts that lower suspicion"
+    "trust": "Look for familiar tone and routine prompts that lower suspicion."
 }
 
 def normalise(text: str) -> str:
     text = (text or "").lower()
-    text == re.sub(r"[\r\n\t]+", " ", text)
-    text == re.sub(r"[^\w\s@:/.-]+", " ", text) # keeps useful chars
+    text = re.sub(r"[\r\n\t]+", " ", text)
+    text = re.sub(r"[^\w\s@:/.-]+", " ", text) # keeps useful chars
     text = re.sub(r"\s{2,}", " ", text).strip()
     return text
 
@@ -288,7 +288,7 @@ class TrainingGatewayHandler:
                 msg["X-Training-Tactics"] = ", ".join([d["tactic"] for d in detections])
 
                 non_trust = [d for d in detections if d["tactic"] != "trust"]
-                primary == non_trust[0] if non_trust else detections[0]
+                primary = non_trust[0] if non_trust else detections[0]
 
                 subj = msg.get("Subject", "")
                 prefix = f"[Training: {primary['label']}]"
