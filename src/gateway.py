@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -137,7 +138,7 @@ def build_training_banner_html(detections):
         if TACTIC_TIPS.get(d["tactic"], "")
     )
 
-    # Subtle “info” styling: light background, thin border, not shouty.
+    # Subtle html styling.
     return f"""
 <div style="
   margin: 0 0 16px 0;
@@ -176,8 +177,28 @@ def inject_banner_into_html(existing_html: str, banner_html: str) -> str:
     # Fallback: prepend if no <body> tag found
     return banner_html + html
 
+ALLOWED_DOMAIN = os.getenv("ALLOWED_DOMAIN", "smtp-gateway-lab.com").lower()
+
+def extract_domain(address: str) -> str:
+    # Handles both user@domain and "Name ,user@domain>"
+    if not address:
+        return ""
+    address = address.strip()
+    if "<" in address and ">" in address:
+        address = address.split("<", 1)[1].split(">", 1)[0].strip()
+    if "@" not in address:
+        return ""
+    return address.rsplit("@", 1)[1].lower()
 
 class TrainingGatewayHandler:
+    async def handle_RCPT(self, server, session, envelope, address, rcpt_options):
+        dom = extract_domain(address)
+        if dom != ALLOWED_DOMAIN:
+            return "550 5.7.1 Relaying denied"
+        envelope.rcpt_tos.append(address)
+        return "250 2.1.5 OK"
+    
+
     async def handle_DATA(self, server, session, envelope):
         SAVE_DIR.mkdir(exist_ok=True)
 
@@ -229,7 +250,7 @@ class TrainingGatewayHandler:
                         try:
                             html_body = part.get_content()
                         except Exception:
-                            payload = part.get_payload(deocde=True) or b""
+                            payload = part.get_payload(decode=True) or b""
                             html_body = payload.decode(errors="replace")
                         break
             else:
@@ -238,7 +259,7 @@ class TrainingGatewayHandler:
                         html_body = msg.get_content()
                     except Exception:
                         payload = msg.get_payload(decode=True) or b""
-                        html_body == payload.decode(errors="replace")
+                        html_body = payload.decode(errors="replace")
 
             content_for_detection = plain_body or html_body
             detections = analyse_persuasion(subject or "", content_for_detection or "")
@@ -272,7 +293,7 @@ class TrainingGatewayHandler:
                     try:
                         return p.get_content()
                     except Exception:
-                        payload == p.get_payload(decode=True) or b""
+                        payload = p.get_payload(decode=True) or b""
                         return payload.decode(errors="replace")
                 
                 if msg.is_multipart():
@@ -285,7 +306,7 @@ class TrainingGatewayHandler:
                 else:
                     if msg.get_content_type() == "text/html":
                         try:
-                            existing_html == msg.get_content()
+                            existing_html = msg.get_content()
                         except Exception:
                             payload == msg.get_payload(decode=True) or b""
                             existing_html = payload.decode(errors="replace")
@@ -315,7 +336,12 @@ class TrainingGatewayHandler:
         # Forward unchanged to downstream SMTP
         try:
             with smtplib.SMTP(DOWNSTREAM_HOST, DOWNSTREAM_PORT, timeout=15) as smtp:
-                smtp.sendmail(envelope.mail_from, envelope.rcpt_tos, to_forward)
+                allowed_rcpts = [r for r in envelope.rcpt_tos if extract_domain(r) == ALLOWED_DOMAIN]
+                if not allowed_rcpts:
+                    print("[DROP] relay attempt (no allowed recipients)")
+                    return "250 Message accepted for delivery"
+                smtp.sendmail(envelope.mail_from, allowed_rcpts, to_forward)
+
             print("[FWD ] forwarded to downstream")
         except Exception as e:
             print(f"[ERR ] forwarding failed: {e}")
