@@ -201,7 +201,7 @@ def build_training_banner(detections):
         return ""
 
     lines = []
-    lines.append("=== TRAINING BANNER: PERSUASION CUES DETECTED ===")
+    lines.append("=== PERSUASION CUES DETECTED ===")
     lines.append("This email contains persuasion techniques commonly used in phishing.")
     lines.append("Pause before acting. Verify the sender via a trusted channel.")
     lines.append("")
@@ -242,7 +242,7 @@ def build_training_banner_html(detections):
   font-family: Arial, Helvetica, sans-serif;
   font-size: 13px;
   line-height: 1.35;">
-  <div style="font-weight: 700; margin-bottom: 6px;">Training banner: persuasion cues detected</div>
+  <div style="font-weight: 700; margin-bottom: 6px;">Persuasion cues detected</div>
   <div style="margin-bottom: 8px;">
     This email contains persuasion techniques commonly used in phishing. Pause before acting and verify the sender via a trusted channel.
   </div>
