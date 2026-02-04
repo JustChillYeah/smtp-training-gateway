@@ -65,6 +65,17 @@ RULES = {
         ],
         "threshold": 5,
     },
+    "trust": {
+        "label": "Trust",
+        "subject": [
+            ("TRU_01", 2, ["notification", "account update", "payment receipt", "this message is to inform you"]),
+        ],
+        "body": [
+            ("TRU_02", 2, ["thank you", "customer services", "do not reply to this email", "for your information"]),
+            ("TRU_03", 3, ["log in to view", "review your account", "access online banking", "view message details"]),
+        ],
+        "threshold": 4,
+    },
 }
 
 TACTIC_TIPS = {
@@ -72,11 +83,19 @@ TACTIC_TIPS = {
     "fear": "Look for threats (account locked, investigation, harm) that push compliance.",
     "authority": "Look for impersonation of official bodies and 'policy/compliance' language.",
     "reward": "Look for unexpected refunds, prizes, or 'money owed to you' claims.",
+    "trust": "Look for familiar tone and routine prompts that lower suspicion"
 }
 
+def normalise(text: str) -> str:
+    text = (text or "").lower()
+    text == re.sub(r"[\r\n\t]+", " ", text)
+    text == re.sub(r"[^\w\s@:/.-]+", " ", text) # keeps useful chars
+    text = re.sub(r"\s{2,}", " ", text).strip()
+    return text
+
 def analyse_persuasion(subject: str, body: str):
-    s = (subject or "").lower()
-    b = (body or "").lower()
+    s = normalise(subject)
+    b = normalise(body)
 
     detections = []
     for tactic, cfg in RULES.items():
@@ -268,7 +287,9 @@ class TrainingGatewayHandler:
                 msg["X-Training-Gateway"] = "smtp-training-gateway"
                 msg["X-Training-Tactics"] = ", ".join([d["tactic"] for d in detections])
 
-                primary = detections[0]
+                non_trust = [d for d in detections if d["tactic"] != "trust"]
+                primary == non_trust[0] if non_trust else detections[0]
+
                 subj = msg.get("Subject", "")
                 prefix = f"[Training: {primary['label']}]"
                 if not subj.startswith(prefix):
@@ -308,7 +329,7 @@ class TrainingGatewayHandler:
                         try:
                             existing_html = msg.get_content()
                         except Exception:
-                            payload == msg.get_payload(decode=True) or b""
+                            payload = msg.get_payload(decode=True) or b""
                             existing_html = payload.decode(errors="replace")
                         new_html = inject_banner_into_html(existing_html, banner_html)
                         msg.set_content(new_html, subtype="html")
