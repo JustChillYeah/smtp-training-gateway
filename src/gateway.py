@@ -282,6 +282,39 @@ def extract_domain(address: str) -> str:
         return ""
     return address.rsplit("@", 1)[1].lower()
 
+def defang_url(url: str) -> str:
+    # Defang the URL in a reversible way
+    u = url
+    u = u.replace("http://", "hxxp://")
+    u = u.replace("https://", "hxxps://")
+    u = re.sub(r"\.", "[.]", u)
+    return u
+
+def defang_text(text: str) -> str:
+    # Defang any URLs found in plain text
+    if not text:
+        return text
+    
+    def _repl(match):
+        return defang_url(match.group(0))
+    
+    return URL_RE.sub(_repl, text)
+
+def defang_html(html: str) -> str:
+    if not html:
+        return html
+    
+    #defang href attributes
+    def _href_repl(match):
+        url = match.group(1)
+        return f'href="{defang_url(url)}"'
+    
+    html = HREF_RE.sub(_href_repl, html)
+
+    #defang visible URLs in text
+    html = defang_text(html)
+
+    return html
 class TrainingGatewayHandler:
     async def handle_RCPT(self, server, session, envelope, address, rcpt_options):
         dom = extract_domain(address)
@@ -382,6 +415,7 @@ class TrainingGatewayHandler:
 
                 msg["X-Training-Gateway"] = "smtp-training-gateway"
                 msg["X-Training-Tactics"] = ", ".join([d["tactic"] for d in detections])
+                msg["X-Training-URL-Defanged"] = "true"
 
                 non_trust = [d for d in detections if d["tactic"] != "trust"]
                 primary = non_trust[0] if non_trust else detections[0]
@@ -395,7 +429,8 @@ class TrainingGatewayHandler:
 
                 if plain_body:
                     banner = build_training_banner(detections)
-                    new_body = banner + "\n" + plain_body
+                    defanged_body = defang_text(plain_body)
+                    new_body = banner + "\n" + defanged_body
 
                     if msg.is_multipart():
                         for part in msg.walk():
@@ -417,7 +452,8 @@ class TrainingGatewayHandler:
                     for part in msg.walk():
                         if part.get_content_type() == "text/html":
                             existing_html = _get_html_from_part(part)
-                            new_html = inject_banner_into_html(existing_html, banner_html)
+                            defanged_html = defang_html(existing_html)
+                            new_html = inject_banner_into_html(defanged_html, banner_html)
                             part.set_content(new_html, subtype="html")
                             break
                 else:
